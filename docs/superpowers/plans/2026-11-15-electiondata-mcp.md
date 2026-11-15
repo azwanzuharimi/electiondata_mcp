@@ -13,6 +13,9 @@
 ## Global Constraints
 
 - No new runtime dependency beyond `mcp` and `duckdb`. No `shapely`, no `spatial` extension.
+- Platforms: macOS, Windows, Linux; ARM and x86; Python 3.12–3.14. CI matrix: `ubuntu-latest`, `ubuntu-24.04-arm`, `macos-latest`, `macos-15-intel`, `windows-latest`, `windows-11-arm`. `cryptography` is pinned below 49 on Intel Mac and below 46.0.4 on Windows ARM, the newest versions with ready-made builds there.
+- Paths: use `pathlib`; never build file paths with `/` strings in runtime code.
+- Docker image: `linux/amd64` and `linux/arm64`.
 - SQL safety settings exactly as spec 7.6; lake prefix `https://lake.electiondata.my/`.
 - `run_sql`: one `SELECT`/`WITH` statement; default 200 rows, max 2,000; 30 s time limit; voter roll queries need `LIMIT` ≤ 10,000 or an aggregate.
 - API key from env `ELECTIONDATA_API_KEY`; never logged or returned. Without it, API tools return a "not configured" message.

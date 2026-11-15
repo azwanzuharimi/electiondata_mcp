@@ -34,6 +34,10 @@ Build an MCP server that lets a web chat analyse Malaysian election data from
 5. Find the seat that contains a map point (latitude and longitude), for any boundary year
    in the lake.
 6. Stay light: small container image, low memory, fast start.
+   Run on macOS, Windows and Linux, on both ARM and x86 (added by the owner on 2026-11-15).
+   Every dependency must install from a ready-made build (no compiler) on all six, for
+   Python 3.12 to 3.14. CI runs the tests on all six. The Docker image is built for
+   `linux/amd64` and `linux/arm64`.
 7. Run in two connection modes: web (Streamable HTTP) for hosted use, and local (stdio) for
    testing in Claude Code.
 8. **Data discovery:** find the right dataset by topic, column or coverage, and show how
@@ -377,6 +381,7 @@ The README must have these sections, and every command in it must be run once be
 - Approach C: lake first, API for live turnout, lineage and party name mapping.
 - Python.
 - Lightweight is a requirement.
+- Runs on macOS, Windows and Linux, ARM and x86.
 - Public GitHub repo `electiondata_mcp`.
 - Anyone can call the server. No login.
 - Self-hosted only. Each operator brings their own API key.

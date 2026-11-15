@@ -63,7 +63,11 @@ class Lake:
                 "autoload_known_extensions": False,
             }
         )
-        self.con.execute("LOAD httpfs")
+        try:
+            self.con.execute("LOAD httpfs")
+        except duckdb.Error:
+            self.con.execute("INSTALL httpfs")
+            self.con.execute("LOAD httpfs")
         self.con.execute(f"SET memory_limit = '{memory_limit}'")
         self.con.execute("SET allow_persistent_secrets = false")
         for name in IN_MEMORY:
