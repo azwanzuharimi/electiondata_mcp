@@ -171,9 +171,15 @@ Dockerfile, .dockerignore, README.md
 - [ ] Step 1: tests with `mcp.Client(server)` in-process: list tools contains all names; `call_tool("contest_result", ...)` returns data; `read_resource("electiondata://guide")` contains "doi:10.1038/s41597-025-06502-7"; rate limit returns 429 on the 61st request in a minute (test the middleware directly with Starlette `TestClient`).
 - [ ] Step 2: implement; tests pass; commit.
 
-### Task 9: Docker, README, end-to-end
+### Task 9: One-command install, Docker, README, end-to-end
 
-**Files:** Create `Dockerfile`, `.dockerignore`; Modify `README.md`
+**Files:** Create `install.sh`, `install.ps1`, `Dockerfile`, `.dockerignore`, `.github/workflows/release.yml`; Modify `README.md`, `.github/workflows/test.yml`
+
+- [ ] Step 0: `install.sh` (macOS, Linux) and `install.ps1` (Windows): install uv with its official installer if `uv` is missing, then `uv tool install --force git+https://github.com/azwanzuharimi/electiondata_mcp`, then print the connect commands. One command each:
+  `curl -LsSf https://raw.githubusercontent.com/azwanzuharimi/electiondata_mcp/main/install.sh | sh` and
+  `powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/azwanzuharimi/electiondata_mcp/main/install.ps1 | iex"`.
+  CI job `install` runs the script from the checked-out branch on all six runners, then `electiondata-mcp --check` (loads the lake, runs one query, prints OK).
+- [ ] Step 0b: `release.yml` builds the Docker image for `linux/amd64` and `linux/arm64` and pushes `ghcr.io/azwanzuharimi/electiondata_mcp` on push to `main`.
 
 - [ ] Step 1: Dockerfile from the measured minimal build (spec 7.9), entry `python -m electiondata_mcp --http --host 0.0.0.0 --port 8000`, `httpfs` installed at build time.
 - [ ] Step 2: build; `docker run` with no key; `curl /health` → ok; call `contest_result` over HTTP with `mcp.Client("http://localhost:8000/mcp")` → P.121 GE-15 winner.

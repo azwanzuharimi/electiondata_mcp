@@ -358,7 +358,8 @@ The README must have these sections, and every command in it must be run once be
 
 1. What it is, with the tool list.
 2. Requirements: uv and Python 3.12, or Docker. An ElectionData.MY API key for the API tools.
-3. Install and run: with uv (`uv run ...`), and with Docker (`docker build`, `docker run`).
+3. Install with one command per platform: `install.sh` for macOS and Linux, `install.ps1`
+   for Windows, or `docker run` with the published image. Also from source with uv.
 4. Connect: Claude Code (`claude mcp add`), Claude Desktop (JSON config), claude.ai custom
    connector (public HTTPS address of a self-hosted copy), and any HTTP MCP client.
 5. Configuration: every environment variable with its default.
