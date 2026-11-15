@@ -34,6 +34,14 @@ Build an MCP server that lets a web chat analyse Malaysian election data from
 6. Stay light: small container image, low memory, fast start.
 7. Run in two connection modes: web (Streamable HTTP) for hosted use, and local (stdio) for
    testing in Claude Code.
+8. **Data discovery:** find the right dataset by topic, column or coverage, and show how
+   datasets join (added by the owner on 2026-11-15).
+9. **Dashboard discovery:** link any seat, candidate, party, coalition, election or boundary
+   map to its page on electiondata.my.
+10. **Party and candidate analysis:** swing between elections, marginal seats, party
+    performance over time, candidate careers, side-by-side comparisons.
+11. **AI and machine learning support:** ready-joined seat tables for modelling, and a path
+    to the full data without the chat row limit.
 
 ## 3. Non-goals
 
@@ -126,7 +134,7 @@ the owner's daily language, so the owner can fix the server during election seas
 - Official MCP Python SDK (`mcp`, v2.x), FastMCP style.
 - DuckDB 2.x with the `httpfs` extension. One in-process database.
 - `httpx2` (already a dependency of the SDK) for API calls.
-- No geometry library. The point-in-seat lookup uses DuckDB core plus a short Python test (see 7.6).
+- No geometry library. The point-in-seat lookup uses DuckDB core plus a short Python test (see 7.7).
 
 ### 7.2 Data loading
 
@@ -194,20 +202,71 @@ All names and fields are proposals; the builder can rename for clarity.
 |---|---|---|
 | `live_turnout` | election id (e.g. `mlk-se16`), optional level and seat | Latest turnout snapshot with its MYT time, or one 5-minute slot. Says when the election has no live feed. |
 
-**Analysis (lake, SQL)**
+**Data and dashboard discovery**
 
 | Tool | Input | Output |
 |---|---|---|
-| `list_datasets` | optional filter text | Dataset names, titles, coverage, row counts, and whether it streams. |
-| `describe_dataset` | name | Columns with types and descriptions, coverage notes. |
+| `search_datasets` | free text (topic, column name, election, state), optional group | Matching datasets with title, coverage, row count, whether it streams, and why it matched. Searches titles, descriptions and column descriptions in the catalogue. |
+| `describe_dataset` | name | Columns with types and descriptions, coverage, the keys it joins on, and links: catalogue page, Parquet, CSV. |
+| `join_guide` | two or more dataset names | The join columns, the join type to use, and known traps for that pair (see 7.5). |
+| `find_dashboard` | kind (seat, candidate, party, coalition, election, map) and a key or free text | Page links on electiondata.my, in English and Bahasa Malaysia. |
+
+**Party and candidate analysis (lake)**
+
+| Tool | Input | Output |
+|---|---|---|
+| `swing` | two elections, state or `Malaysia`, party or coalition | Vote share per seat in each election and the change. Seats whose name changed between the two are listed apart, not silently dropped. |
+| `marginal_seats` | election, state, optional majority threshold (votes or %) | Seats ranked by majority, with winner and runner-up. |
+| `compare` | two to five candidates, parties or coalitions | Side by side: contests, wins, losses, lost deposits, vote share over time. |
+
+**Analysis, AI and machine learning (lake)**
+
+| Tool | Input | Output |
+|---|---|---|
 | `run_sql` | one SQL query, optional row limit | Columns, rows, row count, `truncated` flag, time taken. |
+| `seat_features` | election, state or `Malaysia`, level (`parlimen` or `dun`) | One row per seat: demographics, turnout, winner, majority, vote share per coalition, and the same seat's previous result where the name matches. Ready for modelling. |
+| `data_access` | dataset names, or one SQL query | Direct Parquet links and a short code sample (Python with DuckDB or pandas, R) that loads the full data on the user's own machine. No row limit, because the data does not pass through the chat. |
+
+`find_dashboard` reads a committed index built from `https://electiondata.my/sitemap-0.xml`
+(measured: 823 seat, 14,715 candidate, 1,981 party, 289 coalition, 456 election and 18
+boundary map pages). The same `scripts/build_catalogue.py` run refreshes it.
+Address patterns: `candidates/<candidate_uid>/`, `parties/<party_uid>/<state code>/`,
+`coalitions/<coalition_uid>/<state code>/`, `elections/<state code>/<election>/`,
+`seats/<parlimen|dun>/<slug>/`, `redelineation/<region>-<year>/`. Bahasa Malaysia pages add
+the prefix `ms-MY/`.
 
 **Resource:** `electiondata://guide`. A short guide: what each dataset holds, how seats and
-elections are named (`P.052 Bayan Baru`, `GE-15`, `SE-15`, `BY-ELECTION`), known traps
-(SE-16 exists in several states, uncontested seats have zero votes and null percentages,
-seat names change across boundary years), and two or three worked SQL examples.
+elections are named (`P.052 Bayan Baru`, `GE-15`, `SE-15`, `BY-ELECTION`), the join map
+(7.5), known traps, and worked SQL examples for a swing, a party time series, and a
+polling-centre breakdown.
 
-### 7.5 SQL safety
+### 7.5 Join map
+
+Measured on 2026-11-15 against the live lake (unmatched rows / total):
+
+| Join | Columns | Result |
+|---|---|---|
+| `headline_ballots` ⟷ `headline_stats`, GE-15 | `election, state, seat` | 0 / 222 |
+| `saluran_stats_ge15` ⟷ `headline_stats` | `election, state, seat` | 0 / 222 |
+| map `peninsular_2018_parlimen` ⟷ `headline_stats` GE-15 | map `parlimen, state` = `seat, state` | 0 / 166 |
+| `voter_roll_ge15` ⟷ `headline_stats` GE-15 | roll `parlimen, state` = `seat, state` | 0 / 222 |
+| `voter_demographics` GE-15 ⟷ `headline_stats` GE-15 | `election, state, seat` | **600 / 822** |
+
+Other keys: `candidate_uid` across all ballot tables; `party_uid` and `coalition_uid` across
+all ballot tables; `dm, pm, saluran` between polling-centre ballots, stats and voter rolls.
+By-elections share `seat` with the general election, so add `date` to the key for them.
+
+Traps to put in the guide and in `join_guide`:
+
+1. Demographics labelled `GE-15` hold all 822 seats of the GE-15 voter roll: 222 Parliament
+   (`P.`) and 600 state (`N.`). State seat results are labelled `SE-xx`, so join state seats
+   on `state, seat` and the roll date, not on `election`.
+2. `SE-16` exists in several states. Always filter on `state` too.
+3. Seat names and numbers change across boundary years. A join across elections on `seat`
+   alone compares different areas. Use lineage from the API, or flag such seats.
+4. Uncontested seats have zero votes and null percentages.
+
+### 7.6 SQL safety
 
 Measured on 2026-11-15 with DuckDB 2.0.0: these settings let lake reads pass and block other
 web hosts, local files, `COPY ... TO`, `ATTACH`, `INSTALL`, and setting changes.
@@ -232,7 +291,7 @@ Apply them after the in-memory tables and views are created. On top of that:
 5. Memory limit for DuckDB: set from an environment variable, default 1 GB.
 6. Each request gets its own cursor from one shared connection, so in-memory tables are shared.
 
-### 7.6 Point-in-seat lookup
+### 7.7 Point-in-seat lookup
 
 Measured on 2026-11-15:
 
@@ -254,7 +313,7 @@ Measured on 2026-11-15:
 Choose the map set by year: the newest delimitation on or before the given year, per region
 (Peninsular, Sabah, Sarawak). Cache parsed shapes in memory after first use.
 
-### 7.7 API client
+### 7.8 API client
 
 - Key from environment variable `ELECTIONDATA_API_KEY`. Never logged, never returned.
 - Without a key, the server still starts; API tools return a clear "not configured" message.
@@ -266,7 +325,7 @@ Choose the map set by year: the newest delimitation on or before the given year,
   `/seats/dropdown` (cached), and match on seat name + state. Do not build slugs by hand.
 - Behind a proxy, the rate limit reads the client IP from the proxy header the host sets.
 
-### 7.8 Transport, deployment, limits
+### 7.9 Transport, deployment, limits
 
 - Streamable HTTP at `/mcp`, stateless, JSON responses. `GET /health` for the host.
 - stdio when started with `--stdio`, for local Claude Code use.
@@ -277,12 +336,12 @@ Choose the map set by year: the newest delimitation on or before the given year,
 - Logs: one line per tool call with tool name, time taken, row count and error type.
   No query text from users in logs by default.
 
-### 7.9 Tests
+### 7.10 Tests
 
 - Unit tests per tool against a small local copy of a few lake files (fixture Parquet in
   `tests/data/`), so tests run offline.
 - One set of live tests, marked and skipped by default, that hit the real lake and API.
-- Safety tests: each blocked case in 7.5 must raise.
+- Safety tests: each blocked case in 7.6 must raise.
 - Known answers as checks against independent sources, for example GE-15 seat totals by
   coalition and the GE-15 result of `P.121 Lembah Pantai`.
 
@@ -292,14 +351,19 @@ Choose the map set by year: the newest delimitation on or before the given year,
 - Python.
 - Lightweight is a requirement.
 - Public GitHub repo `electiondata_mcp`.
+- Scope includes data discovery, dashboard discovery, historical data, analysis, AI and
+  machine learning, party and candidate analysis, and joins.
 
 ## 9. Calls made by the designer (open to change)
 
 - Tool list and names in 7.4.
-- Point-in-seat with DuckDB core and a short Python test, not `spatial` or `shapely` (7.6).
+- Point-in-seat with DuckDB core and a short Python test, not `spatial` or `shapely` (7.7).
 - Freshness check every 10 minutes (7.2).
 - Row limits 200 / 2,000, query time limit 30 s, rate limit 60 calls per minute.
 - No login for MCP clients by default (see 10).
+- Full data for machine learning goes out as lake links plus code (`data_access`), not through
+  the server. This keeps the server light (see 10, question 4).
+- `seat_features` matches the previous result by seat name only, and flags seats whose name changed.
 
 ## 10. Open questions for the owner
 
@@ -307,6 +371,10 @@ Choose the map set by year: the newest delimitation on or before the given year,
    (for example, only the friend's app and your own connectors)?
 2. **License for the code.** The data is CC0. The code needs its own license.
 3. **Host.** The Docker image runs anywhere. The host can be chosen after the build.
+4. **AI and machine learning: where does the model training run?** If it runs on the
+   user's machine or notebook, `data_access` is enough. If the chat itself must hand over
+   large query results as files, the server needs a download endpoint, which adds load and
+   storage.
 
 ## 11. Left to the builder
 
@@ -314,3 +382,4 @@ Choose the map set by year: the newest delimitation on or before the given year,
 - Fixture data choice for offline tests.
 - How the catalogue script reads each page (the pages embed JSON in an HTML attribute).
 - The exact CA certificate path in the image.
+- How `find_dashboard` builds seat slugs: read them from the sitemap index, not by hand.
