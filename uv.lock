@@ -270,6 +270,7 @@ dependencies = [
     { name = "cryptography", version = "46.0.3", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine == 'ARM64' and sys_platform == 'win32'" },
     { name = "cryptography", version = "48.0.1", source = { registry = "https://pypi.org/simple" }, marker = "platform_machine == 'x86_64' and sys_platform == 'darwin'" },
     { name = "duckdb" },
+    { name = "httpx2" },
     { name = "mcp" },
 ]
 
@@ -284,6 +285,7 @@ requires-dist = [
     { name = "cryptography", marker = "platform_machine == 'x86_64' and sys_platform == 'darwin'", specifier = "<49" },
     { name = "cryptography", marker = "platform_machine == 'ARM64' and sys_platform == 'win32'", specifier = "<46.0.4" },
     { name = "duckdb", specifier = "==2.0.*" },
+    { name = "httpx2", specifier = ">=2.16" },
     { name = "mcp", specifier = "==2.3.*" },
 ]
 

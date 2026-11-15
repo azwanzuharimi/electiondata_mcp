@@ -27,3 +27,5 @@ jobs:
       - run: uv run python -c "import platform, duckdb, cryptography; print(platform.system(), platform.machine(), duckdb.__version__, cryptography.__version__)"
       - run: uv run pytest -q
       - run: uv run pytest -q -m live
+        env:
+          ELECTIONDATA_API_KEY: ${{ secrets.ELECTIONDATA_API_KEY }}
