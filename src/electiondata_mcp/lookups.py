@@ -232,8 +232,8 @@ def _summary(lake: Lake, election: str, state: str | None) -> dict:
     p = [election] + ([state] if state else [])
     stats = lake.records(
         f"""SELECT count(*) AS contests, count(*) FILTER (WHERE n_candidates = 1) AS uncontested_seats,
-               sum(voters_total) FILTER (WHERE n_candidates > 1) AS voters_contested, sum(ballots_issued) AS ballots_issued,
-               round(100.0 * sum(ballots_issued) / nullif(sum(voters_total) FILTER (WHERE n_candidates > 1), 0), 2) AS turnout_perc,
+               sum(voters_total) FILTER (WHERE n_candidates > 1) AS voters_contested, sum(ballots_issued) FILTER (WHERE n_candidates > 1) AS ballots_issued_contested,
+               round(100.0 * sum(ballots_issued) FILTER (WHERE n_candidates > 1) / nullif(sum(voters_total) FILTER (WHERE n_candidates > 1), 0), 2) AS turnout_perc,
                min(date) AS first_date, max(date) AS last_date
             FROM headline_stats WHERE {scope}""",
         p,

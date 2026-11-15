@@ -49,6 +49,23 @@ Build an MCP server that lets a web chat analyse Malaysian election data from
 11. **AI and machine learning support:** ready-joined seat tables for modelling, and a path
     to the full data without the chat row limit.
 
+12. **Accuracy for broadcast use** (added by the owner on 2026-11-15: news anchors may use it;
+    no mistake allowed):
+    - Every tool result names its sources: dataset, Parquet link, data-as-of date, and the
+      matching electiondata.my page where one exists, so a person can check it before air.
+    - No silent guesses. A name that matches more than one seat or person returns the
+      choices. A match on part of a name says so in the result.
+    - Definitions travel with the numbers: `voter_turnout` = 100 × ballots issued ÷ voters;
+      `majority_perc` = 100 × majority ÷ valid votes; `votes_perc` = share of valid votes.
+      Measured on the full lake on 2026-11-15: 0 mismatches in 9,754 contested contests.
+    - Live turnout is labelled provisional, with the SPR snapshot time in MYT.
+    - A daily data check (CI, 06:00 MYT) runs on the live lake: one winner per contest,
+      majority = winner − runner-up, valid votes = sum of candidate votes, shares sum to 100,
+      turnout and majority formulas, and polling-centre totals = seat totals for every
+      polling-centre file. All 63 checks passed on 2026-11-15.
+    - Fixed answers from published results (GE-15: PH 82, PN 74, BN 30, GPS 23, GRS 6 seats,
+      222 seats in total) are live tests.
+
 ## 3. Non-goals
 
 - No chat user interface. The friend builds that.
