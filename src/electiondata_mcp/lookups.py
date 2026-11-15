@@ -34,10 +34,13 @@ def _norm_state(lake: Lake, state: str | None) -> str | None:
     return rows[0]["state"]
 
 
-def resolve_seat(
-    lake: Lake, seat: str, state: str | None = None
-) -> list[tuple[str, str]]:
+def resolve_seat(lake: Lake, seat: str, state: str | None = None) -> list[tuple[str, str]]:
+    return _resolve(lake, seat, state)[0]
+
+
+def _resolve(lake: Lake, seat: str, state: str | None = None) -> tuple[list[tuple[str, str]], str]:
     state = _norm_state(lake, state)
+    how = "exact name"
     m = CODE_RE.match(seat)
     if m and m.group(2):
         code = f"{m.group(1).upper()}.{int(m.group(2)):03d}{m.group(3).upper()}"
@@ -48,6 +51,7 @@ def resolve_seat(
             + " = ?)"
         )
         params = [code + " %", rest, rest]
+        how = "code and name" if rest else "code"
     else:
         sql = (
             "SELECT DISTINCT seat, state FROM headline_stats WHERE "
@@ -60,13 +64,14 @@ def resolve_seat(
         params.append(state)
     rows = lake.records(sql + " ORDER BY seat", params)
     if not rows:
+        how = "partial name"
         rows = lake.records(
             "SELECT DISTINCT seat, state FROM headline_stats WHERE seat ILIKE ? "
             + ("AND state = ? " if state else "")
             + "ORDER BY seat",
             ["%" + seat.strip() + "%"] + ([state] if state else []),
         )
-    return [(r["seat"], r["state"]) for r in rows]
+    return [(r["seat"], r["state"]) for r in rows], how
 
 
 def _groups(pairs: list[tuple[str, str]]) -> dict[tuple[str, str], list[str]]:
@@ -77,8 +82,8 @@ def _groups(pairs: list[tuple[str, str]]) -> dict[tuple[str, str], list[str]]:
     return groups
 
 
-def _one_seat(lake: Lake, seat: str, state: str | None) -> tuple[list[str], str] | dict:
-    pairs = resolve_seat(lake, seat, state)
+def _one_seat(lake: Lake, seat: str, state: str | None) -> tuple[list[str], str, dict] | dict:
+    pairs, how = _resolve(lake, seat, state)
     if not pairs:
         return {"error": f"No seat matches '{seat}'. Use search to find it."}
     groups = _groups(pairs)
@@ -88,7 +93,10 @@ def _one_seat(lake: Lake, seat: str, state: str | None) -> tuple[list[str], str]
             "hint": "Pass the full seat name with code, and the state.",
         }
     ((key, seats),) = groups.items()
-    return seats, key[1]
+    match = {"seat_match": how}
+    if how == "partial name":
+        match["warning"] = f"'{seat}' matched only part of the seat name {', '.join(seats)}. Confirm this is the seat you mean."
+    return seats, key[1], match
 
 
 def search(
@@ -152,11 +160,11 @@ def seat_history(lake: Lake, seat: str, state: str | None = None) -> dict:
     found = _one_seat(lake, seat, state)
     if isinstance(found, dict):
         return found
-    seats, st = found
+    seats, st, match = found
     rows = lake.records(
         WINNER_SQL.format(where="s.state = ? AND list_contains(?, s.seat)"), [st, seats]
     )
-    return {
+    return match | {
         "scope": f"Every contest for {', '.join(seats)} ({st}), newest first. Seat codes change with boundary reviews; use seat_lineage for boundary changes. {CREDIT}",
         "history": rows,
     }
@@ -172,7 +180,7 @@ def contest_result(
     found = _one_seat(lake, seat, state)
     if isinstance(found, dict):
         return found
-    seats, st = found
+    seats, st, match = found
     where = "election = ? AND state = ? AND list_contains(?, seat)" + (
         " AND date = ?" if date else ""
     )
@@ -181,7 +189,7 @@ def contest_result(
         f"SELECT * FROM headline_stats WHERE {where} ORDER BY date DESC", params
     )
     if not stats:
-        return {
+        return match | {
             "error": f"No {election} contest for {', '.join(seats)} ({st}). Check seat_history for the elections held there."
         }
     contests = []
@@ -192,7 +200,7 @@ def contest_result(
             [s["date"], s["election"], s["state"], s["seat"]],
         )
         contests.append({"stats": s, "ballot": ballot})
-    return {
+    return match | {
         "scope": f"{election.upper()} result for {', '.join(seats)} ({st}). voter_turnout is a percentage. {CREDIT}",
         "contests": contests,
     }
@@ -312,7 +320,7 @@ def seat_demographics(
     found = _one_seat(lake, seat, state)
     if isinstance(found, dict):
         return found
-    seats, st = found
+    seats, st, match = found
     params = [st, seats] + ([election.upper()] if election else [])
     rows = lake.records(
         "SELECT * FROM voter_demographics WHERE state = ? AND list_contains(?, seat)"
@@ -321,7 +329,7 @@ def seat_demographics(
         params,
     )
     if not rows:
-        return {
+        return match | {
             "error": f"No demographics for {', '.join(seats)} ({st})"
             + (f" in {election}" if election else "")
             + ". Coverage: GE-12 to GE-15 and some state elections."
@@ -342,7 +350,7 @@ def seat_demographics(
         )
         if detail:
             out["ethnic_detail"] = detail[0]
-    return out
+    return match | out
 
 
 def saluran_dataset(lake: Lake, election: str, state: str) -> str | None:
@@ -372,11 +380,11 @@ def polling_centre_results(
     found = _one_seat(lake, seat, state)
     if isinstance(found, dict):
         return found
-    seats, st = found
+    seats, st, match = found
     ballots = saluran_dataset(lake, election, st)
     if not ballots:
         have = sorted(n for n in lake.catalogue if n.startswith("saluran_ballots_"))
-        return {
+        return match | {
             "note": f"There is no polling-centre data for {election.upper()} in {st}. Available: {', '.join(have)}.",
             "rows": [],
         }
@@ -390,7 +398,7 @@ def polling_centre_results(
         limit=limit,
     )
     rows = [dict(zip(r["columns"], row)) for row in r["rows"]]
-    return {
+    return match | {
         "scope": f"{election.upper()} votes per {'polling stream (saluran)' if level == 'saluran' else 'polling district (dm)'} for {', '.join(seats)} ({st}), from {ballots}. {CREDIT}",
         "rows": rows,
         "truncated": r["truncated"],

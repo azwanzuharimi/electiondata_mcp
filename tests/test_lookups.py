@@ -120,3 +120,16 @@ def test_polling_centre_results(lake):
 def test_polling_centre_results_missing_election(lake):
     r = lk.polling_centre_results(lake, "GE-05", "lembah pantai")
     assert "no polling-centre data" in r["note"]
+
+
+def test_exact_match_is_labelled(lake):
+    assert lk.seat_history(lake, "lembah pantai")["seat_match"] == "exact name"
+    assert lk.contest_result(lake, "GE-15", "P121", state="Kuala Lumpur")["seat_match"] == "code"
+    assert "ambiguous" in lk.contest_result(lake, "GE-15", "P121")
+
+
+def test_partial_match_warns(lake):
+    assert "ambiguous" in lk.seat_history(lake, "Kapa")
+    r = lk.seat_history(lake, "P.109 Kapa")
+    assert r["seat_match"] == "partial name"
+    assert "Confirm" in r["warning"]
