@@ -12,6 +12,8 @@ Build an MCP server that lets a web chat analyse Malaysian election data from
 - **Two clients, one server:**
   1. Existing chat apps (claude.ai, ChatGPT) that add the server as a connector.
   2. A chat website that a friend of the owner will build later. It calls the same server.
+- **Who runs it:** each user hosts their own copy, with their own API key. The owner does not
+  run a public instance. Anyone may connect to a copy; there is no login.
 - **Why now:** the next general election (GE16) is coming. Question volume will peak in
   that season, and on polling day most of all.
 - **Why a new server:** an MCP for this site already exists
@@ -333,8 +335,7 @@ Choose the map set by year: the newest delimitation on or before the given year,
   (`distroless/cc` base, uv's standalone Python, stripped libraries, `httpfs` included in
   the image so start needs no download).
 - Per-client-IP request limit, default 60 tool calls per minute, set by environment variable.
-- Logs: one line per tool call with tool name, time taken, row count and error type.
-  No query text from users in logs by default.
+  It protects the operator's API key on an open server.
 
 ### 7.10 Tests
 
@@ -345,12 +346,41 @@ Choose the map set by year: the newest delimitation on or before the given year,
 - Known answers as checks against independent sources, for example GE-15 seat totals by
   coalition and the GE-15 result of `P.121 Lembah Pantai`.
 
+### 7.11 README
+
+The README must have these sections, and every command in it must be run once before release:
+
+1. What it is, with the tool list.
+2. Requirements: uv and Python 3.12, or Docker. An ElectionData.MY API key for the API tools.
+3. Install and run: with uv (`uv run ...`), and with Docker (`docker build`, `docker run`).
+4. Connect: Claude Code (`claude mcp add`), Claude Desktop (JSON config), claude.ai custom
+   connector (public HTTPS address of a self-hosted copy), and any HTTP MCP client.
+5. Configuration: every environment variable with its default.
+6. Data credit (see 7.12).
+7. License.
+
+### 7.12 License and data credit
+
+- Code: MIT, `LICENSE` file in the repo root.
+- Data: CC0 from ElectionData.MY. Credit is not legally required, but the owner wants it.
+  The README credits ElectionData.MY and the Malaysian Election Corpus (MECo), curated by
+  Thevesh Thevananthan, cites the paper (Scientific Data, 2025,
+  doi:10.1038/s41597-025-06502-7), and names the Election Commission of Malaysia (SPR) as
+  the official source.
+- The server returns the same short credit line in the `electiondata://guide` resource and in
+  the MCP server instructions.
+- Logs: one line per tool call with tool name, time taken, row count and error type.
+  No query text from users in logs by default.
+
 ## 8. Decided by the owner
 
 - Approach C: lake first, API for live turnout, lineage and party name mapping.
 - Python.
 - Lightweight is a requirement.
 - Public GitHub repo `electiondata_mcp`.
+- Anyone can call the server. No login.
+- Self-hosted only. Each operator brings their own API key.
+- MIT license for the code, with credit to the data owners.
 - Scope includes data discovery, dashboard discovery, historical data, analysis, AI and
   machine learning, party and candidate analysis, and joins.
 
@@ -360,21 +390,15 @@ Choose the map set by year: the newest delimitation on or before the given year,
 - Point-in-seat with DuckDB core and a short Python test, not `spatial` or `shapely` (7.7).
 - Freshness check every 10 minutes (7.2).
 - Row limits 200 / 2,000, query time limit 30 s, rate limit 60 calls per minute.
-- No login for MCP clients by default (see 10).
 - Full data for machine learning goes out as lake links plus code (`data_access`), not through
-  the server. This keeps the server light (see 10, question 4).
+  the server. This keeps the server light (see 10).
 - `seat_features` matches the previous result by seat name only, and flags seats whose name changed.
 
 ## 10. Open questions for the owner
 
-1. **Who can call the server?** Open to anyone, or only callers with a shared token
-   (for example, only the friend's app and your own connectors)?
-2. **License for the code.** The data is CC0. The code needs its own license.
-3. **Host.** The Docker image runs anywhere. The host can be chosen after the build.
-4. **AI and machine learning: where does the model training run?** If it runs on the
-   user's machine or notebook, `data_access` is enough. If the chat itself must hand over
-   large query results as files, the server needs a download endpoint, which adds load and
-   storage.
+1. **AI and machine learning: where does the model training run?** Still open. Build
+   `data_access` (links plus code) now. Add a download endpoint for large query results only
+   if a real need shows up; it adds load and storage.
 
 ## 11. Left to the builder
 
