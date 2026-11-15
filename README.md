@@ -1,10 +1,50 @@
 # electiondata_mcp
 
 An MCP server for Malaysian election data from [ElectionData.MY](https://electiondata.my/).
+It lets an AI chat look up seats, candidates, parties and elections from 1955 to today,
+run its own analysis with SQL, follow live turnout on polling day, and find the right
+dataset or dashboard page.
 
-**Status: design stage. There is no code yet, so there is nothing to install.**
-Installation, requirements and usage instructions come with the first release.
-Read the design in [docs/superpowers/specs/2026-11-15-electiondata-mcp-design.md](docs/superpowers/specs/2026-11-15-electiondata-mcp-design.md).
+**Status: in progress. The server is not ready to install yet.**
+Design: [docs/superpowers/specs/2026-11-15-electiondata-mcp-design.md](docs/superpowers/specs/2026-11-15-electiondata-mcp-design.md).
+Build plan: [docs/superpowers/plans/2026-11-15-electiondata-mcp.md](docs/superpowers/plans/2026-11-15-electiondata-mcp.md).
+
+## Supported platforms
+
+| OS | ARM | x86 |
+|---|---|---|
+| macOS | yes | yes |
+| Windows | yes | yes |
+| Linux | yes | yes |
+
+Python 3.12 to 3.14. Every dependency installs from a ready-made build, so no compiler is
+needed. CI runs the tests on all six platforms.
+
+## Install (planned, not working yet)
+
+One command per platform. Each one installs [uv](https://docs.astral.sh/uv/) if it is
+missing, then installs the `electiondata-mcp` command.
+
+macOS and Linux:
+
+```sh
+curl -LsSf https://raw.githubusercontent.com/azwanzuharimi/electiondata_mcp/main/install.sh | sh
+```
+
+Windows (PowerShell):
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/azwanzuharimi/electiondata_mcp/main/install.ps1 | iex"
+```
+
+Docker (any OS):
+
+```sh
+docker run -p 8000:8000 ghcr.io/azwanzuharimi/electiondata_mcp
+```
+
+Full requirements, connect steps for Claude Code, Claude Desktop and claude.ai, and all
+settings come with the first release. Every command in this file will be tested before then.
 
 ## Data credit
 
