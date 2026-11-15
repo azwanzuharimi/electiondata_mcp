@@ -3962,6 +3962,66 @@
   "query_builder": false
  },
  {
+  "name": "map_peninsular_2018_dm",
+  "slug": "peninsular-2018-dm",
+  "title": "2018 Subdivision of Peninsular Malaysia (Voting Districts)",
+  "description": "Boundaries of voting districts in Peninsular Malaysia following the 2018 delimitation and accompanying subdivision exercise.",
+  "group": "peninsular",
+  "category": "Electoral Maps",
+  "subcategory": "Subdivision: DMs (Voting Districts)",
+  "data_as_of": "2018",
+  "parquet": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.parquet",
+  "csv": null,
+  "other_links": {
+   "geojson": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.geojson",
+   "topojson": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.topojson",
+   "geoparquet": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.parquet",
+   "flatgeobuf": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.fgb",
+   "kml": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.kml"
+  },
+  "rows": null,
+  "size_bytes": null,
+  "columns": [
+   {
+    "name": "state",
+    "title": "State",
+    "description": "[String] State in which the parliamentary constituency is located, e.g. 'Perlis'"
+   },
+   {
+    "name": "parlimen",
+    "title": "Parliament",
+    "description": "[String] Code (P.xxx) and name of the parliamentary constituency, e.g. 'P.001 Padang Besar'"
+   },
+   {
+    "name": "code_parlimen",
+    "title": "Parliament Code",
+    "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
+   },
+   {
+    "name": "dun",
+    "title": "DUN",
+    "description": "[String] Code (N.xx) and name of the DUN constituency, e.g. 'N.01 Titi Tinggi'"
+   },
+   {
+    "name": "code_dun",
+    "title": "DUN Code",
+    "description": "[String] Official code of the DUN constituency, e.g. 'N.01'"
+   },
+   {
+    "name": "dm",
+    "title": "Voting District",
+    "description": "[String] Code (xxx/yy/zz) and name of the Voting District, e.g. '001/01/01 Jalan Padang Besar'"
+   },
+   {
+    "name": "code_dm",
+    "title": "Voting District Code",
+    "description": "[String] Official code of the Voting District, e.g. '001/01/01'"
+   }
+  ],
+  "streams": true,
+  "query_builder": false
+ },
+ {
   "name": "map_peninsular_2018_dun",
   "slug": "peninsular-2018-dun",
   "title": "2018 Delimitation of Peninsular Malaysia (DUN)",
@@ -4496,6 +4556,66 @@
     "name": "code_parlimen",
     "title": "Parliament Code",
     "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
+   }
+  ],
+  "streams": true,
+  "query_builder": false
+ },
+ {
+  "name": "map_sabah_2019_dm",
+  "slug": "sabah-2019-dm",
+  "title": "2019 Subdivision of Sabah (Voting Districts)",
+  "description": "Boundaries of voting districts in Sabah following the 2019 delimitation and accompanying subdivision exercise.",
+  "group": "sabah",
+  "category": "Electoral Maps",
+  "subcategory": "Subdivision: DMs (Voting Districts)",
+  "data_as_of": "2019",
+  "parquet": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.parquet",
+  "csv": null,
+  "other_links": {
+   "geojson": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.geojson",
+   "topojson": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.topojson",
+   "geoparquet": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.parquet",
+   "flatgeobuf": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.fgb",
+   "kml": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.kml"
+  },
+  "rows": null,
+  "size_bytes": null,
+  "columns": [
+   {
+    "name": "state",
+    "title": "State",
+    "description": "[String] State in which the parliamentary constituency is located, e.g. 'Perlis'"
+   },
+   {
+    "name": "parlimen",
+    "title": "Parliament",
+    "description": "[String] Code (P.xxx) and name of the parliamentary constituency, e.g. 'P.001 Padang Besar'"
+   },
+   {
+    "name": "code_parlimen",
+    "title": "Parliament Code",
+    "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
+   },
+   {
+    "name": "dun",
+    "title": "DUN",
+    "description": "[String] Code (N.xx) and name of the DUN constituency, e.g. 'N.01 Titi Tinggi'"
+   },
+   {
+    "name": "code_dun",
+    "title": "DUN Code",
+    "description": "[String] Official code of the DUN constituency, e.g. 'N.01'"
+   },
+   {
+    "name": "dm",
+    "title": "Voting District",
+    "description": "[String] Code (xxx/yy/zz) and name of the Voting District, e.g. '001/01/01 Jalan Padang Besar'"
+   },
+   {
+    "name": "code_dm",
+    "title": "Voting District Code",
+    "description": "[String] Official code of the Voting District, e.g. '001/01/01'"
    }
   ],
   "streams": true,
@@ -5042,6 +5162,66 @@
   "query_builder": false
  },
  {
+  "name": "map_sarawak_2015_dm",
+  "slug": "sarawak-2015-dm",
+  "title": "2015 Subdivision of Sarawak (Voting Districts)",
+  "description": "Boundaries of voting districts in Sarawak following the 2015 delimitation and accompanying subdivision exercise.",
+  "group": "sarawak",
+  "category": "Electoral Maps",
+  "subcategory": "Subdivision: DMs (Voting Districts)",
+  "data_as_of": "2015",
+  "parquet": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.parquet",
+  "csv": null,
+  "other_links": {
+   "geojson": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.geojson",
+   "topojson": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.topojson",
+   "geoparquet": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.parquet",
+   "flatgeobuf": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.fgb",
+   "kml": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.kml"
+  },
+  "rows": null,
+  "size_bytes": null,
+  "columns": [
+   {
+    "name": "state",
+    "title": "State",
+    "description": "[String] State in which the parliamentary constituency is located, e.g. 'Perlis'"
+   },
+   {
+    "name": "parlimen",
+    "title": "Parliament",
+    "description": "[String] Code (P.xxx) and name of the parliamentary constituency, e.g. 'P.001 Padang Besar'"
+   },
+   {
+    "name": "code_parlimen",
+    "title": "Parliament Code",
+    "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
+   },
+   {
+    "name": "dun",
+    "title": "DUN",
+    "description": "[String] Code (N.xx) and name of the DUN constituency, e.g. 'N.01 Titi Tinggi'"
+   },
+   {
+    "name": "code_dun",
+    "title": "DUN Code",
+    "description": "[String] Official code of the DUN constituency, e.g. 'N.01'"
+   },
+   {
+    "name": "dm",
+    "title": "Voting District",
+    "description": "[String] Code (xxx/yy/zz) and name of the Voting District, e.g. '001/01/01 Jalan Padang Besar'"
+   },
+   {
+    "name": "code_dm",
+    "title": "Voting District Code",
+    "description": "[String] Official code of the Voting District, e.g. '001/01/01'"
+   }
+  ],
+  "streams": true,
+  "query_builder": false
+ },
+ {
   "name": "map_sarawak_2015_dun",
   "slug": "sarawak-2015-dun",
   "title": "2015 Delimitation of Sarawak (DUN)",
@@ -5126,6 +5306,71 @@
     "name": "code_parlimen",
     "title": "Parliament Code",
     "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
+   }
+  ],
+  "streams": true,
+  "query_builder": false
+ },
+ {
+  "name": "map_sarawak_2026_dm_p1",
+  "slug": "sarawak-2026-dm",
+  "title": "2026 Subdivision of Sarawak (Voting Districts): 1st Proposal",
+  "description": "Boundaries of voting districts in Sarawak as proposed in the 1st public display (Pameran 1) of the 2026 delimitation and accompanying subdivision exercise. These boundaries are not yet gazetted, and may change before the exercise is concluded.",
+  "group": "sarawak",
+  "category": "Electoral Maps",
+  "subcategory": "Subdivision: DMs (Voting Districts)",
+  "data_as_of": "2026",
+  "parquet": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.parquet",
+  "csv": null,
+  "other_links": {
+   "geojson": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.geojson",
+   "topojson": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.topojson",
+   "geoparquet": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.parquet",
+   "flatgeobuf": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.fgb",
+   "kml": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.kml"
+  },
+  "rows": null,
+  "size_bytes": null,
+  "columns": [
+   {
+    "name": "state",
+    "title": "State",
+    "description": "[String] State in which the parliamentary constituency is located, e.g. 'Perlis'"
+   },
+   {
+    "name": "parlimen",
+    "title": "Parliament",
+    "description": "[String] Code (P.xxx) and name of the parliamentary constituency, e.g. 'P.001 Padang Besar'"
+   },
+   {
+    "name": "code_parlimen",
+    "title": "Parliament Code",
+    "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
+   },
+   {
+    "name": "dun",
+    "title": "DUN",
+    "description": "[String] Code (N.xx) and name of the DUN constituency, e.g. 'N.01 Titi Tinggi'"
+   },
+   {
+    "name": "code_dun",
+    "title": "DUN Code",
+    "description": "[String] Official code of the DUN constituency, e.g. 'N.01'"
+   },
+   {
+    "name": "dm",
+    "title": "Voting District",
+    "description": "[String] Code (xxx/yy/zz) and name of the Voting District, e.g. '001/01/01 Jalan Padang Besar'"
+   },
+   {
+    "name": "code_dm",
+    "title": "Voting District Code",
+    "description": "[String] Official code of the Voting District, e.g. '001/01/01'"
+   },
+   {
+    "name": "voters_total",
+    "title": "Total Voters",
+    "description": "[Integer] Number of registered voters in the constituency as stated in the EC's public display, e.g. 34197"
    }
   ],
   "streams": true,
@@ -5229,126 +5474,6 @@
    }
   ],
   "streams": true,
-  "query_builder": false
- },
- {
-  "name": "peninsular_2018_dm",
-  "slug": "peninsular-2018-dm",
-  "title": "2018 Subdivision of Peninsular Malaysia (Voting Districts)",
-  "description": "Boundaries of voting districts in Peninsular Malaysia following the 2018 delimitation and accompanying subdivision exercise.",
-  "group": "peninsular",
-  "category": "Electoral Maps",
-  "subcategory": "Subdivision: DMs (Voting Districts)",
-  "data_as_of": "2018",
-  "parquet": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.parquet",
-  "csv": null,
-  "other_links": {
-   "geojson": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.geojson",
-   "topojson": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.topojson",
-   "geoparquet": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.parquet",
-   "flatgeobuf": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.fgb",
-   "kml": "https://lake.electiondata.my/maps/subdivisions/peninsular_2018_dm.kml"
-  },
-  "rows": null,
-  "size_bytes": null,
-  "columns": [
-   {
-    "name": "state",
-    "title": "State",
-    "description": "[String] State in which the parliamentary constituency is located, e.g. 'Perlis'"
-   },
-   {
-    "name": "parlimen",
-    "title": "Parliament",
-    "description": "[String] Code (P.xxx) and name of the parliamentary constituency, e.g. 'P.001 Padang Besar'"
-   },
-   {
-    "name": "code_parlimen",
-    "title": "Parliament Code",
-    "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
-   },
-   {
-    "name": "dun",
-    "title": "DUN",
-    "description": "[String] Code (N.xx) and name of the DUN constituency, e.g. 'N.01 Titi Tinggi'"
-   },
-   {
-    "name": "code_dun",
-    "title": "DUN Code",
-    "description": "[String] Official code of the DUN constituency, e.g. 'N.01'"
-   },
-   {
-    "name": "dm",
-    "title": "Voting District",
-    "description": "[String] Code (xxx/yy/zz) and name of the Voting District, e.g. '001/01/01 Jalan Padang Besar'"
-   },
-   {
-    "name": "code_dm",
-    "title": "Voting District Code",
-    "description": "[String] Official code of the Voting District, e.g. '001/01/01'"
-   }
-  ],
-  "streams": false,
-  "query_builder": false
- },
- {
-  "name": "sabah_2019_dm",
-  "slug": "sabah-2019-dm",
-  "title": "2019 Subdivision of Sabah (Voting Districts)",
-  "description": "Boundaries of voting districts in Sabah following the 2019 delimitation and accompanying subdivision exercise.",
-  "group": "sabah",
-  "category": "Electoral Maps",
-  "subcategory": "Subdivision: DMs (Voting Districts)",
-  "data_as_of": "2019",
-  "parquet": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.parquet",
-  "csv": null,
-  "other_links": {
-   "geojson": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.geojson",
-   "topojson": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.topojson",
-   "geoparquet": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.parquet",
-   "flatgeobuf": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.fgb",
-   "kml": "https://lake.electiondata.my/maps/subdivisions/sabah_2019_dm.kml"
-  },
-  "rows": null,
-  "size_bytes": null,
-  "columns": [
-   {
-    "name": "state",
-    "title": "State",
-    "description": "[String] State in which the parliamentary constituency is located, e.g. 'Perlis'"
-   },
-   {
-    "name": "parlimen",
-    "title": "Parliament",
-    "description": "[String] Code (P.xxx) and name of the parliamentary constituency, e.g. 'P.001 Padang Besar'"
-   },
-   {
-    "name": "code_parlimen",
-    "title": "Parliament Code",
-    "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
-   },
-   {
-    "name": "dun",
-    "title": "DUN",
-    "description": "[String] Code (N.xx) and name of the DUN constituency, e.g. 'N.01 Titi Tinggi'"
-   },
-   {
-    "name": "code_dun",
-    "title": "DUN Code",
-    "description": "[String] Official code of the DUN constituency, e.g. 'N.01'"
-   },
-   {
-    "name": "dm",
-    "title": "Voting District",
-    "description": "[String] Code (xxx/yy/zz) and name of the Voting District, e.g. '001/01/01 Jalan Padang Besar'"
-   },
-   {
-    "name": "code_dm",
-    "title": "Voting District Code",
-    "description": "[String] Official code of the Voting District, e.g. '001/01/01'"
-   }
-  ],
-  "streams": false,
   "query_builder": false
  },
  {
@@ -17554,131 +17679,6 @@
     "name": "ballots_not_returned_perc",
     "title": "Ballots Not Returned (%)",
     "description": "[Float] Unreturned ballots as a percentage of ballots issued at this saluran"
-   }
-  ],
-  "streams": false,
-  "query_builder": false
- },
- {
-  "name": "sarawak_2015_dm",
-  "slug": "sarawak-2015-dm",
-  "title": "2015 Subdivision of Sarawak (Voting Districts)",
-  "description": "Boundaries of voting districts in Sarawak following the 2015 delimitation and accompanying subdivision exercise.",
-  "group": "sarawak",
-  "category": "Electoral Maps",
-  "subcategory": "Subdivision: DMs (Voting Districts)",
-  "data_as_of": "2015",
-  "parquet": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.parquet",
-  "csv": null,
-  "other_links": {
-   "geojson": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.geojson",
-   "topojson": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.topojson",
-   "geoparquet": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.parquet",
-   "flatgeobuf": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.fgb",
-   "kml": "https://lake.electiondata.my/maps/subdivisions/sarawak_2015_dm.kml"
-  },
-  "rows": null,
-  "size_bytes": null,
-  "columns": [
-   {
-    "name": "state",
-    "title": "State",
-    "description": "[String] State in which the parliamentary constituency is located, e.g. 'Perlis'"
-   },
-   {
-    "name": "parlimen",
-    "title": "Parliament",
-    "description": "[String] Code (P.xxx) and name of the parliamentary constituency, e.g. 'P.001 Padang Besar'"
-   },
-   {
-    "name": "code_parlimen",
-    "title": "Parliament Code",
-    "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
-   },
-   {
-    "name": "dun",
-    "title": "DUN",
-    "description": "[String] Code (N.xx) and name of the DUN constituency, e.g. 'N.01 Titi Tinggi'"
-   },
-   {
-    "name": "code_dun",
-    "title": "DUN Code",
-    "description": "[String] Official code of the DUN constituency, e.g. 'N.01'"
-   },
-   {
-    "name": "dm",
-    "title": "Voting District",
-    "description": "[String] Code (xxx/yy/zz) and name of the Voting District, e.g. '001/01/01 Jalan Padang Besar'"
-   },
-   {
-    "name": "code_dm",
-    "title": "Voting District Code",
-    "description": "[String] Official code of the Voting District, e.g. '001/01/01'"
-   }
-  ],
-  "streams": false,
-  "query_builder": false
- },
- {
-  "name": "sarawak_2026_dm_p1",
-  "slug": "sarawak-2026-dm",
-  "title": "2026 Subdivision of Sarawak (Voting Districts): 1st Proposal",
-  "description": "Boundaries of voting districts in Sarawak as proposed in the 1st public display (Pameran 1) of the 2026 delimitation and accompanying subdivision exercise. These boundaries are not yet gazetted, and may change before the exercise is concluded.",
-  "group": "sarawak",
-  "category": "Electoral Maps",
-  "subcategory": "Subdivision: DMs (Voting Districts)",
-  "data_as_of": "2026",
-  "parquet": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.parquet",
-  "csv": null,
-  "other_links": {
-   "geojson": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.geojson",
-   "topojson": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.topojson",
-   "geoparquet": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.parquet",
-   "flatgeobuf": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.fgb",
-   "kml": "https://lake.electiondata.my/maps/subdivisions/sarawak_2026_dm_p1.kml"
-  },
-  "rows": null,
-  "size_bytes": null,
-  "columns": [
-   {
-    "name": "state",
-    "title": "State",
-    "description": "[String] State in which the parliamentary constituency is located, e.g. 'Perlis'"
-   },
-   {
-    "name": "parlimen",
-    "title": "Parliament",
-    "description": "[String] Code (P.xxx) and name of the parliamentary constituency, e.g. 'P.001 Padang Besar'"
-   },
-   {
-    "name": "code_parlimen",
-    "title": "Parliament Code",
-    "description": "[String] Official code of the parliamentary constituency, e.g. 'P.001'"
-   },
-   {
-    "name": "dun",
-    "title": "DUN",
-    "description": "[String] Code (N.xx) and name of the DUN constituency, e.g. 'N.01 Titi Tinggi'"
-   },
-   {
-    "name": "code_dun",
-    "title": "DUN Code",
-    "description": "[String] Official code of the DUN constituency, e.g. 'N.01'"
-   },
-   {
-    "name": "dm",
-    "title": "Voting District",
-    "description": "[String] Code (xxx/yy/zz) and name of the Voting District, e.g. '001/01/01 Jalan Padang Besar'"
-   },
-   {
-    "name": "code_dm",
-    "title": "Voting District Code",
-    "description": "[String] Official code of the Voting District, e.g. '001/01/01'"
-   },
-   {
-    "name": "voters_total",
-    "title": "Total Voters",
-    "description": "[Integer] Number of registered voters in the constituency as stated in the EC's public display, e.g. 34197"
    }
   ],
   "streams": false,

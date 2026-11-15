@@ -51,3 +51,10 @@ def test_pages_index():
     assert len(pages["candidate"]) > 10000
     assert len(pages["seat"]) > 800
     assert any(p.startswith("redelineation/") for p in pages["redelineation"])
+
+
+def test_all_maps_named_and_streamed():
+    cat = json.loads((PKG / "catalogue.json").read_text())
+    maps = [e for e in cat if "/maps/" in e["parquet"]]
+    assert len(maps) == 43
+    assert all(e["name"].startswith("map_") and e["streams"] for e in maps)

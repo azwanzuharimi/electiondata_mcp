@@ -66,7 +66,7 @@ def derive_name(parquet: str) -> str:
         return f"saluran_{kind}_{scope}"
     if folder == "voter_rolls":
         return "voter_roll_" + file.rsplit("_", 1)[0]
-    if folder == "maps/delimitations":
+    if folder.startswith("maps/"):
         return "map_" + file
     return file
 
