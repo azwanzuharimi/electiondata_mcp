@@ -66,3 +66,5 @@ def test_ge15_published_seat_counts(live):
     seats = {r["coalition"]: r["seats_won"] for r in election_summary(live, "GE-15")["by_state"]["Malaysia"]["by_coalition"]}
     assert (seats["PH"], seats["PN"], seats["BN"], seats["GPS"], seats["GRS"]) == (82, 74, 30, 23, 6)
     assert sum(seats.values()) == 222
+    rows = {r["coalition"]: r for r in election_summary(live, "GE-15")["by_state"]["Malaysia"]["by_coalition"]}
+    assert [(rows[c]["votes"], rows[c]["votes_perc"]) for c in ("PH", "PN", "BN")] == [(5931856, 37.99), (4719665, 30.23), (3459844, 22.16)]

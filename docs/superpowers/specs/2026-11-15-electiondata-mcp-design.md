@@ -66,6 +66,10 @@ Build an MCP server that lets a web chat analyse Malaysian election data from
     - Fixed answers from published results (GE-15: PH 82, PN 74, BN 30, GPS 23, GRS 6 seats,
       222 seats in total) are live tests.
 
+    - Open item, found 2026-11-15: GE-15 BN national votes are 3,459,844 in the lake and
+      3,459,988 on Wikipedia (difference 144; both give 22.16%). PH (5,931,856) and PN
+      (4,719,665) match exactly. Not yet traced to a seat. Raise with ElectionData.MY.
+
 ## 3. Non-goals
 
 - No chat user interface. The friend builds that.
