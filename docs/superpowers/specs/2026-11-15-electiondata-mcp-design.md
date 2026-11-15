@@ -58,7 +58,7 @@ Build an MCP server that lets a web chat analyse Malaysian election data from
 - The model gives a wrong number because a tool hid a filter, a truncation, or an
   uncontested seat. Every tool result must state its scope and any truncation.
 - A user reaches data or systems outside the lake through the SQL tool.
-- The server leaks the API key, or someone uses our server to flood the API.
+- The server leaks the API key, or someone uses a running copy of the server to flood the API.
 - The server falls over on polling day because of load.
 
 ## 5. What the data looks like (measured 2026-11-15)
@@ -336,6 +336,8 @@ Choose the map set by year: the newest delimitation on or before the given year,
   the image so start needs no download).
 - Per-client-IP request limit, default 60 tool calls per minute, set by environment variable.
   It protects the operator's API key on an open server.
+- Logs: one line per tool call with tool name, time taken, row count and error type.
+  No query text from users in logs by default.
 
 ### 7.10 Tests
 
@@ -369,8 +371,6 @@ The README must have these sections, and every command in it must be run once be
   the official source.
 - The server returns the same short credit line in the `electiondata://guide` resource and in
   the MCP server instructions.
-- Logs: one line per tool call with tool name, time taken, row count and error type.
-  No query text from users in logs by default.
 
 ## 8. Decided by the owner
 
